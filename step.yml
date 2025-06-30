@@ -1,0 +1,65 @@
+#
+# A couple of useful guides & docs:
+#
+# - Main Bitrise CLI docs: https://github.com/bitrise-io/bitrise/tree/master/_docs
+# - Step Development Guideline: https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
+# - Bitrise.yml format spec: https://github.com/bitrise-io/bitrise/blob/master/_docs/bitrise-yml-format-spec.md
+# - Bitrise docs: http://devcenter.bitrise.io/
+# - Bitrise CLI guides: http://devcenter.bitrise.io/bitrise-cli/
+
+title: |-
+  bitrise-step-jira-ticket-transition
+summary: |
+  Move tickets in Jira
+description: |
+  Move multiple tickets to a chain of allowed transitions
+website: https://github.com/Freebox-Apps/bitrise-step-jira-ticket-transition
+source_code_url: https://github.com/Freebox-Apps/bitrise-step-jira-ticket-transition
+support_url: https://github.com/Freebox-Apps/bitrise-step-jira-ticket-transition
+
+type_tags:
+  - utility
+
+toolkit:
+  bash:
+    entry_file: step.sh
+
+
+inputs:
+  - JIRA_DOMAIN:
+    opts:
+      title: Jira company domain
+      is_sensitive: true
+      is_required: true
+  - JIRA_USER:
+    opts:
+      title: Jira user name
+      is_sensitive: true
+      is_required: true
+  - JIRA_TOKEN:
+    opts:
+      title: Jira token
+      is_required: true
+      is_sensitive: true
+  - TICKET_LIST:
+    opts:
+      title: The resolved ticket list
+      description: |
+        All tickets to apply transition
+      is_required: true
+  - TICKET_DELIMITER: "|"
+    opts:
+      title: Ticket delimiter
+      description: Delimiter to use when several tickets are found e.g. with `|` will ouptut TK-123|TK-124
+      is_required: true
+  - TRANSITION_LIST:
+    opts:
+      title: The ordered list of transitions
+      description: |
+        Enter a transition list names or IDs to apply to your ticket list. You can find transition names by browsing your project workflow.
+      is_required: true
+  - TRANSITION_DELIMITER: "|"
+    opts:
+      title: Transition delimiter
+      description:  Delimiter used for multiple transitions
+      is_required: true

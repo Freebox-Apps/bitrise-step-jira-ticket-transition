@@ -1,0 +1,16 @@
+format_version: 4
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+app:
+  envs:
+  # If you want to share this step into a StepLib
+  - BITRISE_STEP_ID: bitrise-step-jira-ticket-transition
+  - BITRISE_STEP_VERSION: "0.0.1"
+  - BITRISE_STEP_GIT_CLONE_URL: https://github.com/Freebox-Apps/bitrise-step-jira-ticket-transition.git
+
+workflows:
+  test:
+    steps:
+    - path::./:
+        title: Apply transitions
+        run_if: true
