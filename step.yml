@@ -28,22 +28,25 @@ toolkit:
 inputs:
   - JIRA_DOMAIN:
     opts:
-      title: Jira company domain
+      title: Jira company DOMAIN
+      description:  e.g. `https://mycompany.atlassian.net`
       is_sensitive: true
       is_required: true
   - JIRA_USER:
     opts:
       title: Jira user name
+      description: User name on Jira (user's email).
       is_sensitive: true
       is_required: true
   - JIRA_TOKEN:
     opts:
       title: Jira token
+      description: API token generated on Jira at <https://id.atlassian.com/manage-profile/security/api-tokens>
       is_required: true
       is_sensitive: true
   - TICKET_LIST:
     opts:
-      title: The resolved ticket list
+      title: Ticket list
       description: |
         All tickets to apply transition
       is_required: true
@@ -54,12 +57,32 @@ inputs:
       is_required: true
   - TRANSITION_LIST:
     opts:
-      title: The ordered list of transitions
+      title: Json map of issue types and transition list to move to
       description: |
-        Enter a transition list names or IDs to apply to your ticket list. You can find transition names by browsing your project workflow.
-      is_required: true
-  - TRANSITION_DELIMITER: "|"
-    opts:
-      title: Transition delimiter
-      description:  Delimiter used for multiple transitions
+        Enter an issue type and the transition list IDs map to apply to your ticket list. e.g. `{ "issueTypeId": ["transitionId1", "transitionId2"] }`
+
+        **Issue type IDs** can be found in project settings page `https://JIRA_COMPANY_DOMAIN/jira/software/projects/PROJECT_PREFIX/settings/issuetypes`
+        Select one and look at the id at the end. NB: you need admin rights to access this page.
+
+        **Transition IDs** for a given ticket can be found with:
+
+        ```
+        curl -s -u "$EMAIL:$API_TOKEN" \
+        -H "Accept: application/json" \
+        "https://$DOMAIN/rest/api/3/issue/$ISSUE_KEY/transitions"|
+        jq -r '.transitions[] | "\(.id)\t\(.name)"'
+        ```
+
+        **Example** input would look like the following:
+          ```
+          {
+              "10019": ["71", "111"],
+              "10020": ["71", "111"],
+              "10021": ["71", "111"],
+              "10057": ["71", "111"],
+              "10048": ["71", "15"],
+              "10982": ["71", "15"],
+              "10983": ["71", "15"]
+            }
+          ```
       is_required: true
