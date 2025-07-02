@@ -13,4 +13,24 @@ workflows:
     steps:
     - path::./:
         title: Apply transitions
+        description: |-
+          The example input has a default value,
+          you can overwrite it if you want to, just like we did below,
+          but the step would use the default value specified in the `step.yml`
+          file if you would not specify another value.
         run_if: true
+        inputs:
+        - JIRA_DOMAIN: $JIRA_DOMAIN
+        - JIRA_USER: $JIRA_USER
+        - JIRA_TOKEN: $JIRA_TOKEN
+        - TRANSITION_LIST: |-
+            {
+                "10019": ["71", "111"],
+                "10020": ["71", "111"],
+                "10021": ["71", "111"],
+                "10057": ["71", "111"],
+                "10048": ["71", "15"],
+                "10982": ["71", "15"],
+                "10983": ["71", "15"]
+              }
+        - TICKET_LIST: MA-3432
