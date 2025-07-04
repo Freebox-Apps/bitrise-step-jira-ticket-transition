@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+# make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+set -o pipefail
 
 # --- Split lists into arrays ---
 IFS=$TICKET_DELIMITER read -ra TICKETS <<< "$TICKET_LIST"
@@ -28,13 +30,13 @@ for ISSUE_KEY in "${TICKETS[@]}"; do
       "https://$JIRA_DOMAIN/rest/api/3/issue/$ISSUE_KEY/transitions")
 
     # Find transition id: either by name or directly if it's a numeric id
-    read -r TRANSITION_ID TRANSITION_NAME < <(
-      echo "$AVAILABLE_TRANSITIONS" | jq -r --arg TRANS "$TRANSITION" '
-        .transitions[]
-        | select((.name == $TRANS) or (.id == $TRANS))
-        | "\(.id) \(.name)"
-      ' | head -n 1
-    )
+    TRANSITION_LINE=$(echo "$AVAILABLE_TRANSITIONS" | jq -r --arg TRANS "$TRANSITION" '
+      .transitions[]
+      | select((.name == $TRANS) or (.id == $TRANS))
+      | "\(.id) \(.name)"
+    ' | head -n 1 || true)
+
+    read -r TRANSITION_ID TRANSITION_NAME <<< "$TRANSITION_LINE"
 
     if [ -z "$TRANSITION_ID" ]; then
       continue
