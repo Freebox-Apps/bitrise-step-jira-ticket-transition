@@ -59,6 +59,5 @@ for ISSUE_KEY in "${TICKETS[@]}"; do
     echo "| ✓ Moved ticket $ISSUE_KEY to $LAST_TRANSITION"
   else
     echo "|  X Failed to move ticket $ISSUE_KEY"
-    break
   fi
 done
