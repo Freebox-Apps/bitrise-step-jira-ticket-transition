@@ -3,6 +3,8 @@ set -e
 # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
 set -o pipefail
 
+echo "TICKET_LIST: $TICKET_LIST"
+
 # --- Split lists into arrays ---
 IFS=$TICKET_DELIMITER read -ra TICKETS <<< "$TICKET_LIST"
 
@@ -13,6 +15,8 @@ for ISSUE_KEY in "${TICKETS[@]}"; do
   -H "Accept: application/json" \
   "https://$JIRA_DOMAIN/rest/api/3/issue/$ISSUE_KEY" \
   | jq -r '.fields.issuetype.id')
+
+  echo "Parse transition payload"
 
   # Parse transition payload
   TRANSITIONS=()
