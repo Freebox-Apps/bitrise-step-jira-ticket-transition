@@ -20,10 +20,17 @@ support_url: https://github.com/Freebox-Apps/bitrise-step-jira-ticket-transition
 type_tags:
   - utility
 
-toolkit:
-  bash:
-    entry_file: step.sh
+deps:
+  brew:
+  - name: git
+  - name: wget
+  apt_get:
+  - name: git
+  - name: wget
 
+toolkit:
+  go:
+    package_name: github.com/Freebox-CI/bitrise-step-jira-ticket-transition
 
 inputs:
   - JIRA_DOMAIN:
