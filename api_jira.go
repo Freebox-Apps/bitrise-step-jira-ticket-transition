@@ -91,23 +91,25 @@ type BulkTransitionBody struct {
 func moveTickets(ticketIds []string, ticketTransitions map[string][]string) {
 	tickets := getJiraTicketsByType(ticketIds)
 
-	fmt.Println("\n# move jira tickets")
-	body := BulkTransitionBody{Inputs: []BulkTransitionInput{}}
+	if len(tickets) > 0 {
+		fmt.Println("\n# move jira tickets")
+		body := BulkTransitionBody{Inputs: []BulkTransitionInput{}}
 
-	for ticketType, tickets := range tickets {
-		transitionIds := ticketTransitions[ticketType]
-		body.Inputs = append(body.Inputs, BulkTransitionInput{tickets, transitionIds[0]})
-	}
+		for ticketType, tickets := range tickets {
+			transitionIds := ticketTransitions[ticketType]
+			body.Inputs = append(body.Inputs, BulkTransitionInput{tickets, transitionIds[0]})
+		}
 
-	out, _ := json.Marshal(body)
-	fmt.Println("--> " + string(out))
+		out, _ := json.Marshal(body)
+		fmt.Println("--> " + string(out))
 
-	jiraClient := getJiraClient()
-	req, _ := jiraClient.NewRequest("POST", "rest/api/3/bulk/issues/transition", body)
+		jiraClient := getJiraClient()
+		req, _ := jiraClient.NewRequest("POST", "rest/api/3/bulk/issues/transition", body)
 
-	_, err := jiraClient.Do(req, nil)
-	
-	if err != nil {
-		panic(err)
+		_, err := jiraClient.Do(req, nil)
+
+		if err != nil {
+			panic(err)
+		}
 	}
 }

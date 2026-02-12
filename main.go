@@ -26,5 +26,7 @@ func getTicketIds() []string {
 func main() {
 	ticketIds := getTicketIds()
 	ticketTransitions := getTransitionList()
-	moveTickets(ticketIds, ticketTransitions)
+	if len(ticketIds) > 0 && len(ticketTransitions) > 0 {
+		moveTickets(ticketIds, ticketTransitions)
+	}
 }
