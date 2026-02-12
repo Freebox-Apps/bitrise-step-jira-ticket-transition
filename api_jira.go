@@ -102,10 +102,10 @@ func moveTickets(ticketIds []string, ticketTransitions map[string][]string) {
 	out, _ := json.Marshal(body)
 	fmt.Println("--> " + string(out))
 
-	jiraClient, err := jira.NewClient(nil, getJiraBaseUrl())
+	jiraClient := getJiraClient()
 	req, _ := jiraClient.NewRequest("POST", "rest/api/3/bulk/issues/transition", body)
 
-	_, err = jiraClient.Do(req, nil)
+	_, err := jiraClient.Do(req, nil)
 	
 	if err != nil {
 		panic(err)
