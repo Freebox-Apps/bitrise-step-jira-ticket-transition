@@ -90,6 +90,8 @@ func moveTickets(ticketIds []string, ticketTransitions map[string][]string) {
 			if len(ticketTransitions[ticketType]) > 0 {
 				transitionId := ticketTransitions[ticketType][0]
 				moveTicketsById(tickets, transitionId)
+			} else {
+				fmt.Println("/!\\ no transition for ticket type " + ticketType)
 			}
 		}
 	}
