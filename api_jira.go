@@ -87,8 +87,10 @@ func moveTickets(ticketIds []string, ticketTransitions map[string][]string) {
 		fmt.Println("\n# move jira tickets")
 
 		for ticketType, tickets := range tickets {
-			transitionId := ticketTransitions[ticketType][0]
-			moveTicketsById(tickets, transitionId)
+			if len(ticketTransitions[ticketType]) > 0 {
+				transitionId := ticketTransitions[ticketType][0]
+				moveTicketsById(tickets, transitionId)
+			}
 		}
 	}
 }
